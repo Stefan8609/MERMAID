@@ -13,59 +13,86 @@ def plot_mermaid_location(
     lon_min=None,
     lon_max=None,
     downsample=10,
+    grid_labels=False,
 ):
+    # ----------------------------
     # Read MERMAID locations
+    # ----------------------------
     data = read_tomocat1("./tomocat1.txt")
-    latitudes = np.asarray(data["stla"], dtype=float)
-    longitudes = np.asarray(data["stlo"], dtype=float)
+    mer_lats = np.asarray(data["stla"], dtype=float)
+    mer_lons = np.asarray(data["stlo"], dtype=float)
 
-    # Wrap longitudes to [-180, 180]
-    longitudes = ((longitudes + 180) % 360) - 180
-
-    # Load GEBCO
+    # ----------------------------
+    # Read GEBCO
+    # ----------------------------
     ds = xr.open_dataset("./GEBCO_2025.nc")
+    lat = ds["lat"].values
+    lon = ds["lon"].values
     elevation = ds["elevation"]
-    lons = ((ds["lon"].values + 180) % 360) - 180
 
-    # Put wrapped longitudes into the data array and sort
-    elevation = elevation.assign_coords(lon=lons).sortby("lon")
-
-    # If a map box is given, subset GEBCO and MERMAIDs first
+    # ----------------------------
+    # Choose longitude center
+    # ----------------------------
     if (
         lat_min is not None
         and lat_max is not None
         and lon_min is not None
         and lon_max is not None
     ):
-        elevation = elevation.sel(
-            lat=slice(lat_min, lat_max),
-            lon=slice(lon_min, lon_max),
-        )
+        central_lon = 0.5 * (lon_min + lon_max)
+    else:
+        central_lon = 0.0
 
-        keep = (
-            (latitudes >= lat_min)
-            & (latitudes <= lat_max)
-            & (longitudes >= lon_min)
-            & (longitudes <= lon_max)
-        )
-        latitudes = latitudes[keep]
-        longitudes = longitudes[keep]
+    # Shift longitudes so the desired box is continuous
+    lon_shifted = ((lon - central_lon + 180) % 360) - 180 + central_lon
+    mer_lons_shifted = ((mer_lons - central_lon + 180) % 360) - 180 + central_lon
 
-    # Downsample GEBCO for speed
-    if downsample is not None and downsample > 1:
-        elevation = elevation.isel(
-            lat=slice(None, None, downsample),
-            lon=slice(None, None, downsample),
-        )
+    # ----------------------------
+    # Subset indices first
+    # ----------------------------
+    if (
+        lat_min is not None
+        and lat_max is not None
+        and lon_min is not None
+        and lon_max is not None
+    ):
+        lat_idx = np.where((lat >= lat_min) & (lat <= lat_max))[0]
+        lon_idx = np.where((lon_shifted >= lon_min) & (lon_shifted <= lon_max))[0]
 
+        mer_keep = (
+            (mer_lats >= lat_min)
+            & (mer_lats <= lat_max)
+            & (mer_lons_shifted >= lon_min)
+            & (mer_lons_shifted <= lon_max)
+        )
+        mer_lats = mer_lats[mer_keep]
+        mer_lons_shifted = mer_lons_shifted[mer_keep]
+    else:
+        lat_idx = np.arange(len(lat))
+        lon_idx = np.arange(len(lon))
+
+    # Sort longitude indices so pcolormesh gets increasing x
+    lon_idx = lon_idx[np.argsort(lon_shifted[lon_idx])]
+
+    # Downsample AFTER subsetting
+    lat_idx = lat_idx[::downsample]
+    lon_idx = lon_idx[::downsample]
+
+    # Extract only the needed subset
+    lat_plot = lat[lat_idx]
+    lon_plot = lon_shifted[lon_idx]
+    elev_plot = elevation.isel(lat=lat_idx, lon=lon_idx).values
+
+    # ----------------------------
+    # Plot
+    # ----------------------------
     fig = plt.figure(figsize=(10, 6))
-    ax = plt.axes(projection=ccrs.Mercator())
+    ax = plt.axes(projection=ccrs.Mercator(central_longitude=central_lon))
 
-    # Plot GEBCO
     im = ax.pcolormesh(
-        elevation["lon"].values,
-        elevation["lat"].values,
-        elevation.values,
+        lon_plot,
+        lat_plot,
+        elev_plot,
         transform=ccrs.PlateCarree(),
         cmap="terrain",
         norm=TwoSlopeNorm(vmin=-6000, vcenter=0, vmax=2000),
@@ -73,10 +100,9 @@ def plot_mermaid_location(
         rasterized=True,
     )
 
-    # Plot MERMAIDs
     ax.scatter(
-        longitudes,
-        latitudes,
+        mer_lons_shifted,
+        mer_lats,
         transform=ccrs.PlateCarree(),
         color="red",
         edgecolor="black",
@@ -85,7 +111,6 @@ def plot_mermaid_location(
         zorder=5,
     )
 
-    # Set map extent
     if (
         lat_min is not None
         and lat_max is not None
@@ -96,9 +121,12 @@ def plot_mermaid_location(
     else:
         ax.set_global()
 
-    # Lower-resolution coastlines are faster
     ax.coastlines(resolution="110m")
-    ax.gridlines(draw_labels=True)
+
+    gl = ax.gridlines(draw_labels=grid_labels)
+    if grid_labels:
+        gl.top_labels = False
+        gl.right_labels = False
 
     plt.colorbar(
         im,
@@ -115,7 +143,8 @@ if __name__ == "__main__":
     plot_mermaid_location(
         lat_min=-40,
         lat_max=10,
-        lon_min=-200,
-        lon_max=-120,
+        lon_min=-220,
+        lon_max=-100,
         downsample=50,
+        grid_labels=False,
     )
