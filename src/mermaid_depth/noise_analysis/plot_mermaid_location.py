@@ -10,25 +10,6 @@ from mermaid_depth.misc.read_tomocat1 import read_tomocat1
 
 
 def parse_tomocat_time(s):
-    """
-    Parse TOMOCAT-style timestamp.
-
-    The format appears to be:
-
-        YYYY-MM-DDTHH:MM:SSB.BB
-
-    where SS is the SAC reference second, and B.BB is the offset from
-    the SAC B header field in seconds.
-
-    Examples
-    --------
-    2018-06-29T17:07:310.21
-        -> 2018-06-29T17:07:31 + 0.21 s
-
-    2018-07-24T19:26:561.00
-        -> 2018-07-24T19:26:56 + 1.00 s
-        -> 2018-07-24T19:26:57
-    """
     s = str(s)
 
     date_part, clock_part = s.split("T")

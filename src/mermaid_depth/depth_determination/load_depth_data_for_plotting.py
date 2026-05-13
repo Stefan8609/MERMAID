@@ -23,7 +23,7 @@ def plot_depthdiff_epicentral(data):
     epicentral_distances = np.asarray(mermaid_all["gcarc_1D"])[data_indices]
 
     plt.figure(figsize=(10, 6))
-    plt.scatter(epicentral_distances, depth_diffs, alpha=0.3)
+    plt.scatter(epicentral_distances, depth_diffs, alpha=0.1)
     plt.title('Depth Difference vs Epicentral Distance')
     plt.xlabel('Epicentral Distance (degrees)')
     plt.ylabel('Found Depth minus GEBCO Depth (m)')
@@ -37,12 +37,29 @@ def plot_depthdiff_evdp(data):
     print(f"failed data indices: {data["failed_data_indices"]}")
     
     mermaid_all = read_tomocat1("./tomocat1.txt")
-    evdps = np.asarray(mermaid_all["evdp"])[data_indices]
+    evdps = np.asarray(mermaid_all["evdp"])[data_indices] / 1000
 
     plt.figure(figsize=(10, 6))
-    plt.scatter(evdps, depth_diffs, alpha=0.3)
+    plt.scatter(evdps, depth_diffs, alpha=0.1)
     plt.title('Depth Difference vs Event Depth')
     plt.xlabel('Event Depth (km)')
+    plt.ylabel('Found Depth minus GEBCO Depth (m)')
+    plt.grid(True)
+    plt.show()
+
+def plot_depthdiff_magnitude(data):
+    depth_diffs = data["depth_differences"]
+    
+    data_indices = data["data_indices"]
+    print(f"failed data indices: {data["failed_data_indices"]}")
+    
+    mermaid_all = read_tomocat1("./tomocat1.txt")
+    mag_val = np.asarray(mermaid_all["mag_val"])[data_indices]
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(mag_val, depth_diffs, alpha=0.1)
+    plt.title('Depth Difference vs Event Depth')
+    plt.xlabel('Magnitude')
     plt.ylabel('Found Depth minus GEBCO Depth (m)')
     plt.grid(True)
     plt.show()
@@ -53,4 +70,5 @@ if __name__ == "__main__":
 
     # plot_depth_hist(data)
     # plot_depthdiff_epicentral(data)
-    plot_depthdiff_evdp(data)
+    # plot_depthdiff_evdp(data)
+    plot_depthdiff_magnitude(data)

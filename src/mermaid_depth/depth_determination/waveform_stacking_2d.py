@@ -187,7 +187,6 @@ def plot_depth_search2D(
     data_file,
     data_index,
     first_arrival_time_ref,
-    t_arrivals=None,
 ):
     """
     Plot waveform, best stacked packets, and Huang-style 2D grid-search score.
@@ -538,5 +537,4 @@ if __name__ == "__main__":
         data_file=data_file,
         data_index=data_index,
         first_arrival_time_ref=arrival_time_shift,
-        t_arrivals=t_arrivals,
     )

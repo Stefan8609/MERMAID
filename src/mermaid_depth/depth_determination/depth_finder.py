@@ -167,15 +167,15 @@ def find_depth(
     return search_result
 
 if __name__ == "__main__":
-    # import warnings
-    # import numpy as np
+    import warnings
+    import numpy as np
 
-    # warnings.filterwarnings(
-    #     "ignore",
-    #     message=r"Sample spacing read from SAC file.*was rounded.*microsecond precision",
-    #     category=UserWarning,
-    #     module=r"obspy\.io\.sac\.util",
-    # )
+    warnings.filterwarnings(
+        "ignore",
+        message=r"Sample spacing read from SAC file.*was rounded.*microsecond precision",
+        category=UserWarning,
+        module=r"obspy\.io\.sac\.util",
+    )
 
     # file = "./tomocat1.txt"
     # save_path = "./saved_data/depth_search_results.npz"
@@ -252,7 +252,7 @@ if __name__ == "__main__":
     # print(f"Successful searches: {len(data_indices)}")
     # print(f"Failed searches: {len(failed_data_indices)}")
 
-    data_index = 1062
+    data_index = 10601
     result = find_depth(
         data_index=data_index,
         H_radius=500,

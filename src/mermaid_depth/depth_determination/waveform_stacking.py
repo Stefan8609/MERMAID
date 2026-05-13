@@ -465,5 +465,4 @@ if __name__ == "__main__":
         search_result=search_result,
         data_file=data_file,
         data_index=data_index,
-        t_arrivals=t_arrivals,
     )
