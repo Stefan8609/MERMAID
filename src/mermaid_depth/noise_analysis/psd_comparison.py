@@ -128,7 +128,7 @@ def mermaid_noise_psd(sac_file):
     # Convert counts to pressure in Pa before PSD.
     x = x / COUNTS_PER_PA
 
-    taper = dpss(len(x), NW=4, Kmax=1, sym=False)[0]
+    taper = dpss(len(x), NW=4, Kmax=5, sym=False)[0]
 
     freq, psd = periodogram(
         x,
@@ -199,6 +199,7 @@ for i in range(n_plot):
         # ------------------------------------------------------------
         with xr.open_dataset(p2l_file) as ds:
             ww3_lons = ds["longitude"].values
+            print(ds["p2l"].attrs)
 
             if ww3_lons.max() > 180:
                 lon_query = stlo[i] % 360.0
@@ -291,7 +292,7 @@ for i in range(n_plot):
 
         fig.tight_layout()
 
-        plot_file = out_dir / f"{i:05d}_{safe_name(filenames[i])}_mermaid_vs_ww3_native.png"
+        plot_file = out_dir / f"{i:05d}_{safe_name(filenames[i])}_mermaid_vs_ww3_native.pdf"
         fig.savefig(plot_file, dpi=250, bbox_inches="tight")
         plt.close(fig)
 
