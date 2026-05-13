@@ -311,7 +311,7 @@ def plot_mermaid_on_sac(
 # Batch runner: ./Q01/*.sac -> ./plots/*.pdf
 # -------------------------
 if __name__ == "__main__":
-    input_dir = Path("./Q01")
+    input_dir = Path("./Mermaid_Data_Joel")
     output_dir = Path("./plots")
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -323,7 +323,7 @@ if __name__ == "__main__":
     clip_levels = {1: 0, 2: 0, 3: 0, 4: 0, 5: None}
     clip_A = 80
 
-    for sac_file in sac_files:
+    for sac_file in sac_files[:0]:
         out_pdf = output_dir / f"{sac_file.stem}.pdf"
         print(f"Processing {sac_file.name} -> {out_pdf.name}")
 

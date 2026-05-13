@@ -262,6 +262,9 @@ def plot_wave_noise_scatter(df, wave_col="HTSGW", noise_col="noise_rms"):
 
 if __name__ == "__main__":
     event_time = "2022-06-15 15:00"
+    lat0 = -14.4512
+    lon0 = -179.5054
+
     # ------------------------------------------------------------
     # 1. Full spatial field plot
     # ------------------------------------------------------------
@@ -273,25 +276,25 @@ if __name__ == "__main__":
 
     plot_wave_height_map(
         field,
-        lat0=-14.4512,
-        lon0=-179.5054,
+        lat0=lat0,
+        lon0=lon0,
     )
 
     # # ------------------------------------------------------------
     # # 2. Optional: extract nearest point from that field
     # # ------------------------------------------------------------
-    # record = extract_nearest_point_record(
-    #     field,
-    #     lat=lat0,
-    #     lon=lon0,
-    #     output_name="HTSGW",
-    # )
+    record = extract_nearest_point_record(
+        field,
+        lat=lat0,
+        lon=lon0,
+        output_name="HTSGW",
+    )
 
-    # print(record)
+    print(record)
 
-    # # ------------------------------------------------------------
-    # # 3. Optional: build point time series around the event
-    # # ------------------------------------------------------------
+    # ------------------------------------------------------------
+    # 3. Optional: build point time series around the event
+    # ------------------------------------------------------------
     # df = build_wavewatch_point_timeseries(
     #     center_time=event_time,
     #     lat=lat0,
@@ -302,9 +305,9 @@ if __name__ == "__main__":
     #     product="epacif.0p16",
     # )
 
-    print(df)
+    # print(df)
 
-    plot_wavewatch_timeseries(
-        df,
-        event_time=event_time,
-    )
+    # plot_wavewatch_timeseries(
+    #     df,
+    #     event_time=event_time,
+    # )

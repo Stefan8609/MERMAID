@@ -270,3 +270,8 @@ if __name__ == "__main__":
     print('Length of each column:')
     for key, column in data.items():
         print(f"{key}: {len(column)}")
+
+    #print Filename
+    print("Filenames:")
+    for i in range(12085, 12091, 1):
+        print(data["filename"][i])

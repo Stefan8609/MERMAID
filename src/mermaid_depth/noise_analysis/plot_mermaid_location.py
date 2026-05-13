@@ -45,7 +45,7 @@ def plot_mermaid_location_intervals(
     # ----------------------------
     # Read MERMAID data
     # ----------------------------
-    data = read_tomocat1("./tomocat1.txt")
+    data = np.load("./saved_data/mermaid_loc_time.npz")
 
     mer_lats = np.asarray(data["stla"], dtype=float)
     mer_lons = np.asarray(data["stlo"], dtype=float)
@@ -162,8 +162,6 @@ def plot_mermaid_location_intervals(
             zorder=4,
             label="All points in box",
         )
-        print(mer_lons_shifted[0], mer_lats[0])
-
         # Current interval in red.
         ax.scatter(
             mer_lons_shifted[time_keep],
@@ -224,10 +222,10 @@ if __name__ == "__main__":
     plot_mermaid_location_intervals(
         start_time="2018-08-27T00:00:000.00",
         n_intervals=1,
-        interval_hours=168,
+        interval_hours=1000000,
         lat_min=-50,
-        lat_max=20,
-        lon_min=-260,
-        lon_max=-100,
+        lat_max=50,
+        lon_min=-180,
+        lon_max=180,
         downsample=50,
     )
