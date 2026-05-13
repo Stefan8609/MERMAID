@@ -162,6 +162,7 @@ def plot_mermaid_location_intervals(
             zorder=4,
             label="All points in box",
         )
+        print(mer_lons_shifted[0], mer_lats[0])
 
         # Current interval in red.
         ax.scatter(
@@ -222,12 +223,11 @@ def plot_mermaid_location_intervals(
 if __name__ == "__main__":
     plot_mermaid_location_intervals(
         start_time="2018-08-27T00:00:000.00",
-        n_intervals=12,
+        n_intervals=1,
         interval_hours=168,
         lat_min=-50,
         lat_max=20,
         lon_min=-260,
         lon_max=-100,
         downsample=50,
-        # save_dir="mermaid_3hr_frames",
     )

@@ -64,6 +64,24 @@ def plot_depthdiff_magnitude(data):
     plt.grid(True)
     plt.show()
 
+def plot_depthdiff_SNR(data):
+    depth_diffs = data["depth_differences"]
+    
+    data_indices = data["data_indices"]
+    print(f"failed data indices: {data["failed_data_indices"]}")
+    
+    mermaid_all = read_tomocat1("./tomocat1.txt")
+    snr_vals = np.asarray(mermaid_all["SNR"])[data_indices]
+
+    plt.figure(figsize=(10, 6))
+    plt.scatter(snr_vals, depth_diffs, alpha=0.1)
+    plt.xlim(0, 250)
+    plt.title('Depth Difference vs SNR')
+    plt.xlabel('SNR')
+    plt.ylabel('Found Depth minus GEBCO Depth (m)')
+    plt.grid(True)
+    plt.show()
+
 
 if __name__ == "__main__":
     data = np.load("./saved_data/depth_search_results.npz", allow_pickle=True)
@@ -71,4 +89,5 @@ if __name__ == "__main__":
     # plot_depth_hist(data)
     # plot_depthdiff_epicentral(data)
     # plot_depthdiff_evdp(data)
-    plot_depthdiff_magnitude(data)
+    # plot_depthdiff_magnitude(data)
+    plot_depthdiff_SNR(data)

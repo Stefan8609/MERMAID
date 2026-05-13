@@ -161,7 +161,6 @@ def find_depth(
                 data_file=file,
                 data_index=data_index,
                 first_arrival_time_ref=obs_arvltime,
-                t_arrivals=None,
             )
 
     return search_result
@@ -262,6 +261,6 @@ if __name__ == "__main__":
         packet_before=0.0,
         packet_pad_after=2.0,
         demean_windows=False,
-        dim=1,
+        dim=2,
         plot=True,
     )

@@ -196,7 +196,7 @@ if __name__ == "__main__":
     data_index = 500
     t_max = 50.0
     dt = 0.01
-    noise_amp = 0.0
+    noise_amp = 0.2
     noise_corner_freq = 1.0
     arrival_time_shift = 10.0
     source_func = gaussian_sinusoid

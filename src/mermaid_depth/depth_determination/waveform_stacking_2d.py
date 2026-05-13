@@ -406,9 +406,9 @@ def plot_depth_search2D(
 if __name__ == "__main__":
     """INPUTS"""
     data_file = "./tomocat1.txt"
-    data_index = 400
+    data_index = 500
 
-    t_max = 35.0
+    t_max = 50.0
     dt = 0.01
     arrival_time_shift = 10.0
 
@@ -457,7 +457,7 @@ if __name__ == "__main__":
     # ------------------------------------------------------------
     # H-grid
     # ------------------------------------------------------------
-    H_radius = 1500.0
+    H_radius = 500.0
     H_step = 1.0
 
     H_min = max(zf + 10.0, H0 - H_radius)
@@ -467,7 +467,7 @@ if __name__ == "__main__":
     # ------------------------------------------------------------
     # First-arrival-time grid
     # ------------------------------------------------------------
-    t0_radius = 1.0
+    t0_radius = 0.5
     t0_step = dt
 
     first_arrival_time_grid = np.arange(

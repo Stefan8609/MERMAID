@@ -63,7 +63,7 @@ def spike_train(file, t_max, data_index, plot=False):
 
         ax.set_xlabel("time (s)")
         ax.set_ylabel("relative pressure amplitude")
-        ax.set_title(f"{name}\n Arrival angle {fluid_arvl_angle:.2f}°, Receiver Depth: {stdp} m, GEBCO Approximate Ocean Depth: {ocdp} m")
+        ax.set_title(f"{name}\n Arrival angle {fluid_arvl_angle:.2f}°, Receiver Depth: {stdp} m, GEBCO Ocean Depth: {ocdp} m")
 
         x_span = t_max - (-2)
 
