@@ -251,7 +251,7 @@ if __name__ == "__main__":
     # print(f"Successful searches: {len(data_indices)}")
     # print(f"Failed searches: {len(failed_data_indices)}")
 
-    data_index = 10601
+    data_index = 318
     result = find_depth(
         data_index=data_index,
         H_radius=500,

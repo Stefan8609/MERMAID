@@ -75,7 +75,7 @@ if __name__ == "__main__":
     from mermaid_depth.misc.read_tomocat1 import get_mermaid_data
 
     file = "./tomocat1.txt"
-    data_index = 500
+    data_index = 318
 
     mermaid_data = get_mermaid_data(file, data_index)
     name = mermaid_data["name"]

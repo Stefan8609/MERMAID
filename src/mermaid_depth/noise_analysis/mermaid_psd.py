@@ -22,7 +22,7 @@ sac_dir = Path("./Mermaid_Data_Joel")
 out_dir = Path("./plots/Noise/Mermaid_Noise_Spectra")
 out_dir.mkdir(parents=True, exist_ok=True)
 
-noise_seconds = 90.0
+noise_seconds = 80
 
 def noise_spectrum_from_sac(sac_file, save_plot=True):
     st = obspy.read(str(sac_file))
@@ -44,7 +44,7 @@ def noise_spectrum_from_sac(sac_file, save_plot=True):
     x = x - np.mean(x)
 
     # Paper-like single tapered spectrum.
-    taper = dpss(len(x), NW=4, Kmax=1, sym=False)[0]
+    taper = dpss(len(x), NW=4, Kmax=4, sym=False)[0]
 
     freq, psd = periodogram(
         x,

@@ -30,7 +30,7 @@ ww3_dir = Path("./WaveWatch_Data/raw")
 out_dir = Path("./plots/Noise/Mermaid_WaveWatch_Comparison")
 out_dir.mkdir(parents=True, exist_ok=True)
 
-noise_seconds = 90.0
+noise_seconds = 80.0
 
 # MERMAID sensitivity: counts per Pa.
 # Sign does not matter for PSD.
@@ -128,7 +128,7 @@ def mermaid_noise_psd(sac_file):
     # Convert counts to pressure in Pa before PSD.
     x = x / COUNTS_PER_PA
 
-    taper = dpss(len(x), NW=4, Kmax=5, sym=False)[0]
+    taper = dpss(len(x), NW=4, Kmax=4, sym=False)[0]
 
     freq, psd = periodogram(
         x,
@@ -199,7 +199,6 @@ for i in range(n_plot):
         # ------------------------------------------------------------
         with xr.open_dataset(p2l_file) as ds:
             ww3_lons = ds["longitude"].values
-            print(ds["p2l"].attrs)
 
             if ww3_lons.max() > 180:
                 lon_query = stlo[i] % 360.0
@@ -221,7 +220,7 @@ for i in range(n_plot):
                 selected_lon = lon_to_180(selected_lon)
 
             # Native WW3 frequency coordinate.
-            freq_ww3 = p["f"].values
+            freq_ww3 = p["f"].values * 2
 
             # IFREMER P2L files store p2l as log10(Pa^2/Hz).
             # Therefore 10*p2l gives 10 log10(Pa^2/Hz).
@@ -246,7 +245,7 @@ for i in range(n_plot):
             marker="o",
             markersize=4,
             linewidth=1.5,
-            label="WW3 P2L",
+            label="WW3 Doubled P2L",
         )
 
         ax.set_xlim(fmin_plot, fmax_plot)
